@@ -8,7 +8,7 @@ from playwright.async_api import async_playwright
 
 async def main():
     async with async_playwright() as runtime:
-        browser = await runtime.chromium.launch(headless=True)
+        browser = await runtime.chromium.launch(headless=True, args=['--disable-http2'])
         page = await browser.new_page()
         await page.goto('https://www.woolworths.co.nz/specials-offers', wait_until='domcontentloaded', timeout=60000)
         try:
