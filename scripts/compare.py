@@ -65,16 +65,24 @@ def history_summary(rows, fresh):
     prior.sort(key=lambda r: datetime.fromisoformat(r['observed_at']))
     if not prior:
         return {'previous_price': None, 'coverage_observations': 0}
-    previous = Decimal(prior[-1]['price'])
+    factor = Decimal(100 if fresh['unit'] in ('g', 'ml', 'sheet') else 1)
+    def equivalent(row):
+        if row['unit'] != fresh['unit']:
+            raise ValueError('Historical units must match')
+        return unit_price(row) / factor * Decimal(fresh['quantity'])
+    previous = equivalent(prior[-1])
     delta = Decimal(fresh['price']) - previous
     sales = [r for r in prior if r['offer_type'] != 'regular']
-    summary = {'previous_price': str(previous), 'change_nzd': str(delta),
+    summary = {'previous_price': str(previous), 'previous_total_paid': prior[-1]['price'],
+               'previous_quantity': prior[-1]['quantity'], 'comparison_quantity': fresh['quantity'],
+               'change_nzd': str(delta),
                'change_percent': str(delta / previous * 100) if previous else None,
-               'previous_sale': sales[-1]['price'] if sales else None,
+               'previous_sale': str(equivalent(sales[-1])) if sales else None,
                'coverage_observations': len(prior)}
     for days in (30, 90):
-        window = [Decimal(r['price']) for r in prior if (instant - datetime.fromisoformat(r['observed_at'])).total_seconds() <= days * 86400]
+        window = [equivalent(r) for r in prior if (instant - datetime.fromisoformat(r['observed_at'])).total_seconds() <= days * 86400]
         summary[f'observed_low_{days}d'] = str(min(window)) if window else None
+    summary['lowest_previously_observed'] = str(min(equivalent(r) for r in prior))
     return summary
 
 if __name__ == '__main__':
