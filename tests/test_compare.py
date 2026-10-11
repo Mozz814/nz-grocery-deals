@@ -20,6 +20,13 @@ class CompareTests(unittest.TestCase):
         self.assertEqual(results[0]['conclusion'], 'regular cheaper')
     def test_alcohol_excluded(self):
         self.assertIsNone(compare.unit_price(self.row(alcohol=True)))
+    def test_single_and_multibuy_both_compared(self):
+        rows = [self.row(price='3.29', offer_type='regular'),
+                self.row(price='5.00', quantity='1000', minimum_purchase=2, offer_type='multibuy'),
+                self.row(product_id='essentials', name='Essentials', price='1.49', offer_type='regular')]
+        results = compare.better_regulars(rows, datetime.fromisoformat('2026-10-11T09:00:00+13:00'))
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['regular'], 'Essentials')
     def test_expired_or_wrong_units_excluded(self):
         rows = [self.row(expires_at='2026-10-11T08:30:00+13:00'), self.row(product_id='other', offer_type='regular', price='0.10', unit='ml')]
         self.assertEqual(compare.better_regulars(rows, datetime.fromisoformat('2026-10-11T09:00:00+13:00')), [])
