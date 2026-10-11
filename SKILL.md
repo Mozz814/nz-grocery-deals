@@ -17,7 +17,7 @@ Use authenticated Everyday Rewards access when available. Keep credentials and b
 
 ## Compare
 
-Honor named brands exclusively: So Good soya milk, Vogel's bread and Villa Maria Sauvignon Blanc. Never suggest competing brands for those categories. Reduced-fat dairy milk must be a 3 L pack. Eggs must be size 7. Pork is excluded from meat and BBQ foods, but salami containing pork is allowed; uncertain ingredients require a label check.
+Honor brands named in the private profile exclusively. Never suggest competing brands for those categories. Honor configured milk formulation, pack sizes, egg sizes, and ingredient exclusions. Explicit product-specific exceptions override general exclusions; uncertain ingredients require a label check. Empty templates require configuration before collection.
 
 Compare equivalent product types, including regular-priced options, by pack price and price per 100 g for solids or 100 ml for liquids. Use per egg for eggs, per wash for detergents when dosage is known, and per 100 sheets for paper with ply and sheet dimensions stated. Do not compare incompatible units or unknown sizes. Label quality/variant differences; cheap unit price is not proof of equal quality. For multibuys show minimum quantity, total payment and effective unit price; keep single-item price separate.
 
@@ -29,7 +29,7 @@ Conclude whether a regular-priced comparable product is cheaper, equal, or deare
 
 Append verified observations to private `memory/prices.jsonl`; preferences remain in `memory/profile.json`. Do not save invented sample prices as real observations. Record run completeness, inaccessible sources and freshness. Date/time zone is Pacific/Auckland.
 
-Daily report around 08:00: best verified offers; regular prices beating specials; history changes; Rewards actions; separate alcohol offers; incomplete coverage. Send a report every day including unchanged days, as requested. If data collection fails, send a failure/status report, not a recycled current-price list. Split long Telegram messages or attach the complete report. Keep delivery credentials out of messages, source code and logs. User's bot is @GrocMozzg_bot; destination must be verified before delivery.
+Daily report at the configured time: best verified offers; regular prices beating specials; history changes; Rewards actions; separate alcohol offers; incomplete coverage. Send a report every day including unchanged days if configured. If data collection fails, send a failure/status report, not a recycled current-price list. Split long Telegram messages or attach the complete report. Keep delivery credentials out of messages, source code and logs. Use the private configured bot; destination must be verified before delivery.
 
 ## Deployment
 
