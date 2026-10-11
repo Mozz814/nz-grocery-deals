@@ -1,0 +1,15 @@
+{
+  "timezone": "Pacific/Auckland",
+  "daily_time": "08:00",
+  "daily_report_even_unchanged": true,
+  "location": "",
+  "stores": [],
+  "channels": [
+    "in-store",
+    "online"
+  ],
+  "watchlist": [],
+  "exclusive_brands": {},
+  "alcohol_comparisons": false,
+  "telegram_bot": ""
+}
