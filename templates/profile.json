@@ -4,7 +4,10 @@
   "daily_report_even_unchanged": true,
   "location": "",
   "stores": [],
-  "channels": ["in-store", "online"],
+  "channels": [
+    "in-store",
+    "online"
+  ],
   "watchlist": [],
   "exclusive_brands": {},
   "alcohol_comparisons": false,
