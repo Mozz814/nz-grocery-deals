@@ -22,7 +22,7 @@ def better_regulars(rows, now=None):
             raise ValueError('Timestamp must have timezone')
         if stamp > now:
             continue
-        key = (row['product_id'], row['store'], row['channel'])
+        key = (row['product_id'], row['store'], row['channel'], row.get('minimum_purchase', 1))
         if key not in current or stamp > datetime.fromisoformat(current[key]['observed_at']):
             current[key] = row
     eligible = []
