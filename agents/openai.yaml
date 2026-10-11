@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gisborne Grocery Deals"
+  short_description: "Track grocery deals, Rewards and price history"
+  default_prompt: "Use $nz-grocery-deals to check my Gisborne watchlist and compare verified offers with regular prices and history."
