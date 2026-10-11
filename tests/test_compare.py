@@ -20,6 +20,14 @@ class CompareTests(unittest.TestCase):
         self.assertEqual(results[0]['conclusion'], 'regular cheaper')
     def test_alcohol_excluded(self):
         self.assertIsNone(compare.unit_price(self.row(alcohol=True)))
+    def test_reference_requires_opt_in_and_is_labelled(self):
+        rows = [self.row(store='Napier', price_scope='reference'), self.row(product_id='other', price='1.00', offer_type='regular')]
+        now = datetime.fromisoformat('2026-10-11T09:00:00+13:00')
+        self.assertEqual(compare.better_regulars(rows, now), [])
+        self.assertTrue(compare.better_regulars(rows, now, include_reference=True)[0]['approximate'])
+    def test_history_keeps_scopes_separate(self):
+        prior = self.row(price_scope='reference', observed_at='2026-10-10T08:00:00+13:00')
+        self.assertEqual(compare.history_summary([prior], self.row())['coverage_observations'], 0)
     def test_single_and_multibuy_both_compared(self):
         rows = [self.row(price='3.29', offer_type='regular'),
                 self.row(price='5.00', quantity='1000', minimum_purchase=2, offer_type='multibuy'),
