@@ -1,6 +1,7 @@
 import importlib.util
 from pathlib import Path
 import unittest
+from decimal import Decimal
 from datetime import datetime, timezone
 spec = importlib.util.spec_from_file_location('compare', Path(__file__).parents[1] / 'scripts' / 'compare.py')
 compare = importlib.util.module_from_spec(spec)
@@ -35,8 +36,18 @@ class CompareTests(unittest.TestCase):
     def test_historical_price_change(self):
         prior = self.row(price='2.00', observed_at='2026-10-10T08:00:00+13:00')
         summary = compare.history_summary([prior], self.row())
-        self.assertEqual(summary['change_nzd'], '-0.40')
-        self.assertEqual(summary['change_percent'], '-20.0')
+        self.assertEqual(Decimal(summary['change_nzd']), Decimal('-0.40'))
+        self.assertEqual(Decimal(summary['change_percent']), Decimal('-20.0'))
+    def test_history_normalizes_multibuy_quantity(self):
+        prior = self.row(price='3.00', quantity='1000', offer_type='multibuy', observed_at='2026-10-10T08:00:00+13:00')
+        summary = compare.history_summary([prior], self.row(price='1.60', quantity='500'))
+        self.assertEqual(summary['previous_price'], '1.500')
+        self.assertEqual(summary['change_nzd'], '0.100')
+        self.assertEqual(summary['previous_total_paid'], '3.00')
+    def test_history_rejects_incompatible_units(self):
+        prior = self.row(unit='ml', observed_at='2026-10-10T08:00:00+13:00')
+        with self.assertRaises(ValueError):
+            compare.history_summary([prior], self.row())
 
 if __name__ == '__main__':
     unittest.main()
