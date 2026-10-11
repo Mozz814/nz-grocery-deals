@@ -13,16 +13,19 @@ def unit_price(row):
     factors = {'g': 100, 'ml': 100, 'egg': 1, 'wash': 1, 'sheet': 100, 'item': 1}
     return price / quantity * factors[row['unit']]
 
-def better_regulars(rows, now=None):
+def better_regulars(rows, now=None, include_reference=False):
     now = now or datetime.now(timezone.utc)
     current = {}
     for row in rows:
+        scope = row.get('price_scope', 'local')
+        if scope != 'local' and not (scope == 'reference' and include_reference):
+            continue
         stamp = datetime.fromisoformat(row['observed_at'])
         if stamp.utcoffset() is None:
             raise ValueError('Timestamp must have timezone')
         if stamp > now:
             continue
-        key = (row['product_id'], row['store'], row['channel'], row.get('minimum_purchase', 1))
+        key = (row['product_id'], row['store'], row['channel'], scope, row.get('minimum_purchase', 1))
         if key not in current or stamp > datetime.fromisoformat(current[key]['observed_at']):
             current[key] = row
     eligible = []
@@ -52,6 +55,7 @@ def better_regulars(rows, now=None):
                                'regular': regular['name'], 'regular_store': regular['store'],
                                'offer_unit_price': str(unit_price(offer)),
                                'regular_unit_price': str(unit_price(regular)),
+                               'approximate': any(r.get('price_scope', 'local') == 'reference' for r in (offer, regular)),
                                'conclusion': 'equal' if unit_price(regular) == unit_price(offer) else 'regular cheaper'})
     return result
 
@@ -61,6 +65,7 @@ def history_summary(rows, fresh):
     instant = datetime.fromisoformat(fresh['observed_at'])
     keys = ('product_id', 'store', 'channel')
     prior = [r for r in rows if not r.get('alcohol') and all(r[k] == fresh[k] for k in keys)
+             and r.get('price_scope', 'local') == fresh.get('price_scope', 'local')
              and datetime.fromisoformat(r['observed_at']) < instant]
     prior.sort(key=lambda r: datetime.fromisoformat(r['observed_at']))
     if not prior:
