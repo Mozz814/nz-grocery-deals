@@ -6,6 +6,8 @@ Optional: brand, exclusive_brand (required for restricted categories), variant, 
 
 Reject invalid amounts, unknown units, missing store context and fabricated baselines. Deduplicate by id. Receipts prove historical purchases, not ongoing availability. Keep JSONL in private memory.
 
+`price_scope` is `local` (default), `reference` (a configured other branch) or `regional` (a regional advertisement). Reference rows require the actual `store` and `reference_for` target location. Never rename their store to Gisborne. Historical matching also includes scope. Reference comparisons require explicit opt-in and carry an approximate flag; regional advertisements require separate review of branch exclusions and validity.
+
 Official sources:
 - https://www.paknsave.co.nz/upper-north-island/gisborne/gisborne-city
 - https://www.paknsave.co.nz/shop/frequently-asked-questions
