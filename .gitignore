@@ -1,0 +1,9 @@
+memory/
+.env
+.env.*
+!.env.example
+*token*
+*session*
+*cookies*
+__pycache__/
+reports/

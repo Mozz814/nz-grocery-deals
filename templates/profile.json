@@ -1,0 +1,12 @@
+{
+  "timezone": "Pacific/Auckland",
+  "daily_time": "08:00",
+  "daily_report_even_unchanged": true,
+  "location": "Gisborne, New Zealand",
+  "stores": ["PAK'nSAVE Gisborne City", "Woolworths Gisborne"],
+  "channels": ["in-store", "online"],
+  "watchlist": ["meat excluding pork", "salami including pork", "reduced-fat dairy milk 3 L", "So Good soya milk all variants", "potatoes", "carrots", "onions", "cottage cheese classic and light any brand", "olive oil", "sunflower oil", "Vogel's bread", "eggs size 7", "all fruit", "all sweets and desserts", "laundry detergents", "dishwasher detergents", "paper towels", "toilet paper", "all BBQ food sauces fuel and supplies excluding pork food except salami", "Villa Maria Sauvignon Blanc", "spaghetti", "all beer", "snacks"],
+  "exclusive_brands": {"soya milk": "So Good", "bread": "Vogel's", "sauvignon blanc": "Villa Maria"},
+  "alcohol_comparisons": false,
+  "telegram_bot": "@GrocMozzg_bot"
+}
